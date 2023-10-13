@@ -1,6 +1,8 @@
 package com.example.visprog_assignment5.ui.view
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -31,13 +34,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.visprog_assignment5.R
-import com.example.visprog_assignment5.ui.model.CourseData
+import com.example.visprog_assignment5.model.CourseData
 import com.example.visprog_assignment5.ui.viewmodel.Soal2ViewModel
 
 val ColorSoal2Blue: Color = Color(0xFF495D91)
@@ -45,6 +49,7 @@ val ColorSoal2Blue: Color = Color(0xFF495D91)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Soal2View(courseViewModel: Soal2ViewModel = viewModel()){
+
     val textFieldColors = TextFieldDefaults.textFieldColors(
         textColor = Color.Black,
         disabledTextColor = Color.Transparent,
@@ -52,6 +57,7 @@ fun Soal2View(courseViewModel: Soal2ViewModel = viewModel()){
         focusedIndicatorColor = ColorSoal2Blue,
         unfocusedIndicatorColor = Color.Transparent
     )
+    val pattern = "^[0-9]+(\\.[0-9]{0,2})?$".toRegex()
 
     val uiState by courseViewModel.uiState.collectAsState()
 
@@ -79,8 +85,9 @@ fun Soal2View(courseViewModel: Soal2ViewModel = viewModel()){
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(text = "Courses", fontSize = 24.sp, fontWeight = FontWeight.SemiBold)
-                Text(text = "Total SKS: ${courseViewModel.totalSKS}")
-                Text(text = "IPK: ${courseViewModel.IPK}")
+                Text(text = "Total SKS: ${uiState.totalSKS}")
+                Text(text = String.format("IPK: %.2f", uiState.ipk))
+                Text(text = "Course amount: ${uiState.courseList.size}")
             }
 
             Column(
@@ -108,7 +115,7 @@ fun Soal2View(courseViewModel: Soal2ViewModel = viewModel()){
                     )
                     TextField( //score textfield
                         value = score,
-                        onValueChange = { if (it.isDigitsOnly()) score = it },
+                        onValueChange = {score = it},
                         modifier = Modifier
                             .border(2.dp, ColorSoal2Blue, RoundedCornerShape(7))
                             .weight(0.4f)
@@ -132,8 +139,11 @@ fun Soal2View(courseViewModel: Soal2ViewModel = viewModel()){
                         colors = textFieldColors
                     )
                     Button(
-                        onClick = { },
+                        onClick = {
+                            courseViewModel.addCourse(name, sks.toInt(), score.toDouble())
+                                  },
                         colors = ButtonDefaults.buttonColors(ColorSoal2Blue),
+                        enabled = name.isNotBlank() && score.isNotBlank() && sks.isNotBlank() && courseViewModel.scoreValidityChecker(score),
                         modifier = Modifier
                             .weight(1f)
                             .padding(start = 12.dp)
@@ -148,20 +158,19 @@ fun Soal2View(courseViewModel: Soal2ViewModel = viewModel()){
                 }
             }
         }
-
-        item{
-            CourseCard()
+        items(uiState.courseList){
+            CourseCard(it, courseViewModel)
         }
-
-
-//        The Thingy
     }
 }
 
 @Composable
 fun CourseCard(
-//    course: CourseData
+    course: CourseData,
+    courseViewModel: Soal2ViewModel = viewModel(),
 ){
+//    val uiState by courseViewModel.uiState.collectAsState()
+
     Card(
         modifier = Modifier
             .fillMaxWidth(0.95f),
@@ -170,18 +179,25 @@ fun CourseCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth(0.8f)
             ) {
-
+                Text(text = "Name: ${course.name}", fontWeight = FontWeight.SemiBold)
+                Text(text = "SKS: ${course.sks}")
+                Text(text = String.format("Score: %.2f", course.score))
             }
             Icon(
                 painter = painterResource(id = R.drawable.baseline_delete_24),
                 contentDescription = "Delete Button",
-                tint = Color.Red)
+                tint = Color.Red,
+                modifier = Modifier
+                    .weight(1f)
+                    .clickable { courseViewModel.deleteCourse(course) }
+            )
         }
     }
 }

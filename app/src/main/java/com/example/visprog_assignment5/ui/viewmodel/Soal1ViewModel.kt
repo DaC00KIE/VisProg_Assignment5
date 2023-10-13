@@ -1,7 +1,7 @@
 package com.example.visprog_assignment5.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.visprog_assignment5.ui.model.Soal1Game
+import com.example.visprog_assignment5.model.Soal1Game
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

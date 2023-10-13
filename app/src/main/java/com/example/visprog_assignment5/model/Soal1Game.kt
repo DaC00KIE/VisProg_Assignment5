@@ -1,4 +1,4 @@
-package com.example.visprog_assignment5.ui.model
+package com.example.visprog_assignment5.model
 
 data class Soal1Game (
     val score: Int = 0,
