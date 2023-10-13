@@ -1,13 +1,11 @@
 package com.example.visprog_assignment5.ui.view
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -35,7 +33,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -58,7 +55,6 @@ fun Soal2View(courseViewModel: Soal2ViewModel = viewModel()) {
         focusedIndicatorColor = ColorSoal2Blue,
         unfocusedIndicatorColor = Color.Transparent
     )
-    val pattern = "^[0-9]+(\\.[0-9]{0,2})?$".toRegex()
 
     val uiState by courseViewModel.uiState.collectAsState()
 
@@ -103,7 +99,7 @@ fun Soal2View(courseViewModel: Soal2ViewModel = viewModel()) {
                         space = 16.dp
                     )
                 ) {
-                    TextField( //sks textfield
+                    TextField( //sks text field
                         value = sks,
                         onValueChange = { if (it.isDigitsOnly()) sks = it },
                         modifier = Modifier
@@ -112,7 +108,7 @@ fun Soal2View(courseViewModel: Soal2ViewModel = viewModel()) {
                         label = { Text(text = "SKS") },
                         colors = textFieldColors
                     )
-                    TextField( //score textfield
+                    TextField( //score text field
                         value = score,
                         onValueChange = { score = it },
                         modifier = Modifier
@@ -127,7 +123,7 @@ fun Soal2View(courseViewModel: Soal2ViewModel = viewModel()) {
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    TextField( //name textfield
+                    TextField( //name text field
                         value = name,
                         onValueChange = { name = it },
                         modifier = Modifier

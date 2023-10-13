@@ -22,7 +22,7 @@ class Soal2ViewModel: ViewModel() {
 //    this method was used before making a 2nd model
 
     fun addCourse(name: String, sks: Int, score: Double){
-        val newCourseData:CourseData = CourseData(name, sks, score)
+        val newCourseData = CourseData(name, sks, score)
         val newCourseList = _uiState.value.courseList.toMutableList()
         newCourseList.add(newCourseData)
 

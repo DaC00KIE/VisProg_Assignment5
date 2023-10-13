@@ -2,7 +2,6 @@
 
 package com.example.visprog_assignment5.ui.view
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -42,7 +41,6 @@ import com.example.visprog_assignment5.ui.viewmodel.Soal1ViewModel
 val ColorSoal1Blue: Color = Color(0xFF4355B8)
 val ColorSoal1Gray: Color = Color(0xFFE2E0EB)
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun Soal1View(gameViewModel: Soal1ViewModel = viewModel()) {
     val textFieldColors = TextFieldDefaults.textFieldColors(
